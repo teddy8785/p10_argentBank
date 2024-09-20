@@ -1,9 +1,9 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../Store/userSlice';
-import '../styles/Header.css';
-import logo from '../assets/argentBankLogo.png';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../Store/userSlice";
+import "../styles/Header.css";
+import logo from "../assets/argentBankLogo.png";
 
 function Header() {
   const dispatch = useDispatch();
@@ -25,10 +25,16 @@ function Header() {
         </NavLink>
         <div>
           {user ? (
-            <NavLink className="main-nav-item" to="/" onClick={handleLogout}>
-              <i className="fa fa-user-circle"></i>
-              Sign Out
-            </NavLink>
+             <>
+             <NavLink className="main-nav-item" to="/">
+               <i className="fa fa-user-circle"></i>
+               Tony
+             </NavLink>
+             <NavLink className="main-nav-item" to="/" onClick={handleLogout}>
+               <i className="fa fa-sign-out"></i>
+               Sign Out
+             </NavLink>
+           </>
           ) : (
             <NavLink className="main-nav-item" to="/signIn">
               <i className="fa fa-user-circle"></i>
@@ -42,3 +48,4 @@ function Header() {
 }
 
 export default Header;
+
