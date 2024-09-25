@@ -8,6 +8,7 @@ import logo from "../assets/argentBankLogo.png";
 function Header() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
+  const profile = useSelector((state) => state.profile.profile);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -28,7 +29,7 @@ function Header() {
              <>
              <NavLink className="main-nav-item" to="/">
                <i className="fa fa-user-circle"></i>
-               Tony
+               {profile ? profile.firstName : "user"}
              </NavLink>
              <NavLink className="main-nav-item" to="/" onClick={handleLogout}>
                <i className="fa fa-sign-out"></i>

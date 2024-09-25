@@ -1,10 +1,23 @@
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchUserProfile } from '../Store/profileSlice';
 import '../styles/Transactions.css';
 
 function Transactions() {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.user.user?.token);
+  const profile = useSelector((state) => state.profile.profile);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchUserProfile(token));
+    }
+  }, [dispatch, token]);
+
     return (
         <div className="main bg-dark">
         <div className="header">
-          <h1>Welcome back<br />Tony Jarvis!</h1>
+          <h1> Welcome back,<br/> {profile ? `${profile.firstName} ${profile.lastName}` : 'Guest'} !</h1>
           <button className="edit-button">Edit Name</button>
         </div>
         <h2 className="sr-only">Accounts</h2>
