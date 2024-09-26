@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUserProfile } from "../Store/profileSlice";
 import "../styles/Transactions.css";
+import { updateUserProfile } from "../Store/updateSlice";
 
 function Transactions() {
   // récupérer le nom de l'utilisateur pour l'afficher
@@ -26,42 +27,89 @@ function Transactions() {
     setEditName(false);
   };
 
+  // modification de user name
+  const [updateUsername, setUpdateUsername] = useState(
+    profile ? profile.userName : ""
+  );
+
+  useEffect(() => {
+    if (profile) {
+      setUpdateUsername(profile.userName);
+    }
+  }, [profile]);
+
+  const handleUsernameChange = (e) => {
+    setUpdateUsername(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    dispatch(updateUserProfile({ token, userName: updateUsername }));
+    setEditName(false);
+  };
+
   return (
     <div className="main bg-dark">
       {!editName ? (
-         <div className="header">
-         <h1>
-           {" "}
-           Welcome back,
-           <br />{" "}
-           {profile ? `${profile.firstName} ${profile.lastName}` : "Guest"} !
-         </h1>
-         <button className="edit-button" onClick={handleEditClick}>Edit Name</button>
-       </div>
-      ) :  (
-       <div>
-      <form className="header">
-        <h2>Edit user info</h2>
-        <div className="input-content">
-          <label htmlFor="userName">User name: </label>
-          <input type="text" id="userName" value={profile ? profile.userName : ""}></input>
+        <div className="header">
+          <h1>
+            {" "}
+            Welcome back,
+            <br />{" "}
+            {profile ? `${profile.firstName} ${profile.lastName}` : "Guest"} !
+          </h1>
+          <button className="edit-button" onClick={handleEditClick}>
+            Edit Name
+          </button>
         </div>
-        <div className="input-content">
-          <label htmlFor="firstName">First name: </label>
-          <input type="text" id="firstName" value={profile ? profile.firstName : ""} disabled></input>
+      ) : (
+        <div>
+          <form className="header" onSubmit={handleSubmit}>
+            <h2>Edit user info</h2>
+            <div className="input-content">
+              <label htmlFor="userName">User name: </label>
+              <input
+                type="text"
+                id="userName"
+                value={updateUsername}
+                onChange={handleUsernameChange}
+              ></input>
+            </div>
+            <div className="input-content">
+              <label htmlFor="firstName">First name: </label>
+              <input
+                type="text"
+                id="firstName"
+                value={profile ? profile.firstName : ""}
+                disabled
+              ></input>
+            </div>
+            <div className="input-content">
+              <label htmlFor="lastName">Last name: </label>
+              <input
+                type="text"
+                id="lastName"
+                value={profile ? profile.lastName : ""}
+                disabled
+              ></input>
+            </div>
+            <div className="button-content">
+              <button className="edit-button save-button" type="submit">
+                Save
+              </button>
+              <button
+                className="edit-button cancel-button"
+                type="button"
+                onClick={handleCancelClick}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
-        <div className="input-content">
-          <label htmlFor="lastName">Last name: </label>
-          <input type="text" id="lastName" value={profile ? profile.lastName : ""} disabled></input>
-        </div>
-        <div className="button-content">
-        <button className="edit-button save-button" type="submit">Save</button>
-        <button className="edit-button cancel-button" type="button" onClick={handleCancelClick}>Cancel</button>
-        </div>
-      </form>
-    </div>
-    )}
-    
+      )}
+
       <h2 className="sr-only">Accounts</h2>
       <section className="account">
         <div className="account-content-wrapper">
