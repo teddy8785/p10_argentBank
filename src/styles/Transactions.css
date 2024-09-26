@@ -78,3 +78,32 @@
     width: 200px;
   }
 }
+
+/* style formulaire de changement de nom */
+
+input {
+border-radius: 2px;
+border: none;
+height: 25px;
+}
+
+input:disabled {
+  background-color: #a2a3a2;
+  color: #000;
+}
+
+.input-content {
+margin-bottom: 10px;
+}
+
+.button-content {
+display: flex;
+justify-content: center;
+gap: 10px;
+}
+
+.save-button,
+.cancel-button {
+    padding: 10px 50px 10px 50px;
+    margin-top: 20px;
+}
