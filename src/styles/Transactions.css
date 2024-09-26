@@ -81,7 +81,7 @@
 
 /* style formulaire de changement de nom */
 
-input {
+.input {
 border-radius: 2px;
 border: none;
 height: 25px;

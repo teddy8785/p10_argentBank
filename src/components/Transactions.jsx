@@ -70,6 +70,7 @@ function Transactions() {
             <div className="input-content">
               <label htmlFor="userName">User name: </label>
               <input
+               className="input"
                 type="text"
                 id="userName"
                 value={updateUsername}
@@ -79,6 +80,7 @@ function Transactions() {
             <div className="input-content">
               <label htmlFor="firstName">First name: </label>
               <input
+              className="input"
                 type="text"
                 id="firstName"
                 value={profile ? profile.firstName : ""}
@@ -88,6 +90,7 @@ function Transactions() {
             <div className="input-content">
               <label htmlFor="lastName">Last name: </label>
               <input
+               className="input"
                 type="text"
                 id="lastName"
                 value={profile ? profile.lastName : ""}
