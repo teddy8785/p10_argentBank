@@ -27,7 +27,7 @@ function Header() {
         <div>
           {user ? (
              <>
-             <NavLink className="main-nav-item" to="/">
+             <NavLink className="main-nav-item" to="/User">
                <i className="fa fa-user-circle"></i>
                {profile ? profile.firstName : "user"}
              </NavLink>

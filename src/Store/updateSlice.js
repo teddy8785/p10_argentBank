@@ -1,26 +1,31 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 export const updateUserProfile = createAsyncThunk(
-  'profile/updateUserProfile',
-  async ({token, userName}) => {
-    const response = await axios.put('http://localhost:3001/api/v1/user/profile', 
-        { userName},
+  "profile/updateUserProfile",
+  async ({ token, userName }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        "http://localhost:3001/api/v1/user/profile",
+        { userName },
         {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.data;
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
 );
 
 const profileSlice = createSlice({
-  name: 'profile',
+  name: "profile",
   initialState: {
     profile: null,
-    loading: false,
     error: null,
     status: "idle",
   },
@@ -32,12 +37,11 @@ const profileSlice = createSlice({
         state.status = "succeeded";
       })
       .addCase(updateUserProfile.pending, (state) => {
-        state.loading = true;
+        state.status = "pending";
       })
       .addCase(updateUserProfile.rejected, (state, action) => {
-        state.error = action.error.message;
+        state.error = action.payload;
         state.status = "failed";
-        state.loading = false;
       });
   },
 });
