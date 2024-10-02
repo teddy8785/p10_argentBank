@@ -17,10 +17,10 @@ root.render(
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to="/Index" />} />
-          <Route path="/Index" element={<Index />} />
-          <Route path="/SignIn" element={<SignIn />} />
-          <Route path="/User" element={<ProtectedRoute><User /></ProtectedRoute>} />
+          <Route path="/" element={<Navigate to="/index" />} />
+          <Route path="/index" element={<Index />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/user" element={<ProtectedRoute><User /></ProtectedRoute>} />
         </Routes>
       </Router>
     </Provider>

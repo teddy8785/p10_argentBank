@@ -1,36 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUserProfile } from "../Store/profileSlice";
+import { fetchUserProfile, updateUserProfile } from "../Store/profileSlice";
 import "../styles/Transactions.css";
-import { updateUserProfile } from "../Store/updateSlice";
 
 function Transactions() {
-  // récupérer le nom de l'utilisateur pour l'afficher
-  const dispatch = useDispatch();
-  const token = useSelector((state) => state.user.user?.token);
-  const profile = useSelector((state) => state.profile.profile);
+  
+ // récupérer le nom de l'utilisateur pour l'afficher
+ const dispatch = useDispatch();
+ const token = useSelector((state) => state.user.user?.token);
+ const profile = useSelector((state) => state.profile.profile);
 
-  useEffect(() => {
-    if (token) {
-      dispatch(fetchUserProfile(token));
-    }
-  }, [dispatch, token]);
+ useEffect(() => {
+   if (token) {
+     dispatch(fetchUserProfile(token));
+   }
+ }, [dispatch, token]);
 
-  // afficher au click le formulaire d'édition du nom de l'utilisateur
-  const [editName, setEditName] = useState(false);
+ // afficher au click le formulaire d'édition du nom de l'utilisateur
+ const [editName, setEditName] = useState(false);
 
-  const handleEditClick = () => {
-    setEditName(true);
-  };
+ const handleEditClick = () => {
+  setTempUsername(updateUsername);
+   setEditName(true);
+ };
 
-  const handleCancelClick = () => {
-    setEditName(false);
-  };
+ const handleCancelClick = () => {
+  setUpdateUsername(tempUsername);
+  setEditName(false);
+};
 
   // modification de user name
   const [updateUsername, setUpdateUsername] = useState(
     profile ? profile.userName : ""
   );
+
+  // Etat pour stocker le nom d'utilisateur avant modification
+  const [tempUsername, setTempUsername] = useState("");
 
   useEffect(() => {
     if (profile) {
@@ -44,9 +49,14 @@ function Transactions() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    dispatch(updateUserProfile({ token, userName: updateUsername }));
-    setEditName(false);
+    dispatch(updateUserProfile({ token, userName: updateUsername }))
+      .then(() => {
+        setEditName(false);
+        dispatch(fetchUserProfile(token));
+      })
+      .catch((error) => {
+        console.error("Erreur dans le changement de nom !", error);
+      });
   };
 
   return (
@@ -54,10 +64,9 @@ function Transactions() {
       {!editName ? (
         <div className="header">
           <h1>
-            {" "}
             Welcome back,
-            <br />{" "}
-            {profile ? `${profile.firstName} ${profile.lastName}` : "Guest"} !
+            <br />
+            {profile ? `${profile.firstName} ${profile.lastName}` : "Guest"}!
           </h1>
           <button className="edit-button" onClick={handleEditClick}>
             Edit Name

@@ -24,12 +24,12 @@ function Header() {
             alt="Argent Bank Logo"
           />
         </NavLink>
-        <div>
+        <div className="main-nav-link">
           {user ? (
              <>
-             <NavLink className="main-nav-item" to="/User">
+             <NavLink className="main-nav-item" to="/user">
                <i className="fa fa-user-circle"></i>
-               {profile ? profile.firstName : "user"}
+               {profile ? profile.userName : "user"}
              </NavLink>
              <NavLink className="main-nav-item" to="/" onClick={handleLogout}>
                <i className="fa fa-sign-out"></i>
@@ -37,7 +37,7 @@ function Header() {
              </NavLink>
            </>
           ) : (
-            <NavLink className="main-nav-item" to="/signIn">
+            <NavLink className="main-nav-item" to="/signin">
               <i className="fa fa-user-circle"></i>
               Sign In
             </NavLink>

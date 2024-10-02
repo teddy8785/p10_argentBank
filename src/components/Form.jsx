@@ -7,8 +7,9 @@ import { useNavigate } from "react-router-dom";
 function Form() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [msgError, setMsgError] = useState("");
 
-  const { loading, error } = useSelector((state) => state.user);
+  const { loading } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,10 +28,10 @@ function Form() {
       if (result) {
         setEmail("");
         setPassword("");
-        navigate("/User");
+        navigate("/user");
       }
     } catch (error) {
-      console.error("Login failed", error);
+      setMsgError("Identifiant ou mot de passe incorrect !")
     }
   };
 
@@ -65,8 +66,8 @@ function Form() {
           <button type="submit" className="sign-in-button">
             {loading ? "Loading..." : "Sign In"}
           </button>
-          {error && (
-            <div role="alert">{error}</div>
+          {msgError && (
+            <div role="alert">{msgError}</div>
           )}
         </form>
       </section>
