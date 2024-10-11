@@ -4,60 +4,60 @@ import { fetchUserProfile, updateUserProfile } from "../Store/profileSlice";
 import "../styles/Transactions.css";
 
 function Transactions() {
-  
- // récupérer le nom de l'utilisateur pour l'afficher
- const dispatch = useDispatch();
- const token = useSelector((state) => state.user.user?.token);
- const profile = useSelector((state) => state.profile.profile);
 
- useEffect(() => {
-   if (token) {
-     dispatch(fetchUserProfile(token));
-   }
- }, [dispatch, token]);
+const dispatch = useDispatch();
+const token = useSelector((state) => state.user.user?.token);
+const profile = useSelector((state) => state.profile.profile);
 
- // afficher au click le formulaire d'édition du nom de l'utilisateur
- const [editName, setEditName] = useState(false);
+// récupération du profil utilisateur si le token est présent
+useEffect(() => {
+  if (token) {
+    dispatch(fetchUserProfile(token));
+  }
+}, [dispatch, token]);
 
- const handleEditClick = () => {
+// état pour afficher le formulaire d'édition du nom de l'utilisateur
+const [editName, setEditName] = useState(false);
+
+// états pour gérer la modification du nom d'utilisateur
+const [updateUsername, setUpdateUsername] = useState(profile ? profile.userName : "");
+const [tempUsername, setTempUsername] = useState("");
+
+// synchronisation de updateUsername avec le profil lorsque celui-ci est mis à jour
+useEffect(() => {
+  if (profile) {
+    setUpdateUsername(profile.userName);
+  }
+}, [profile]);
+
+// gestion des événements pour afficher et annuler l'édition du nom
+const handleEditClick = () => {
   setTempUsername(updateUsername);
-   setEditName(true);
- };
+  setEditName(true);
+};
 
- const handleCancelClick = () => {
+const handleCancelClick = () => {
   setUpdateUsername(tempUsername);
   setEditName(false);
 };
 
-  // modification de user name
-  const [updateUsername, setUpdateUsername] = useState(
-    profile ? profile.userName : ""
-  );
+// gestion de la saisie de l'utilisateur
+const handleUsernameChange = (e) => {
+  setUpdateUsername(e.target.value);
+};
 
-  // Etat pour stocker le nom d'utilisateur avant modification
-  const [tempUsername, setTempUsername] = useState("");
-
-  useEffect(() => {
-    if (profile) {
-      setUpdateUsername(profile.userName);
-    }
-  }, [profile]);
-
-  const handleUsernameChange = (e) => {
-    setUpdateUsername(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(updateUserProfile({ token, userName: updateUsername }))
-      .then(() => {
-        setEditName(false);
-        dispatch(fetchUserProfile(token));
-      })
-      .catch((error) => {
-        console.error("Erreur dans le changement de nom !", error);
-      });
-  };
+// soumission de la modification de nom d'utilisateur
+const handleSubmit = (e) => {
+  e.preventDefault();
+  dispatch(updateUserProfile({ token, userName: updateUsername }))
+    .then(() => {
+      setEditName(false);
+      dispatch(fetchUserProfile(token));
+    })
+    .catch((error) => {
+      console.error("Erreur dans le changement de nom !", error);
+    });
+};
 
   return (
     <div className="main bg-dark">

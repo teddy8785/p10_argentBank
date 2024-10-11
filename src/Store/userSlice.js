@@ -6,7 +6,7 @@ export const loginUser = createAsyncThunk(
   async(userCredentials, {rejectWithValue}) => {
     try {
       const request = await axios.post("http://localhost:3001/api/v1/user/login",userCredentials);
-      const response = request.data;
+      const response = request.data;  
       sessionStorage.setItem("user", JSON.stringify(response.body));
       return response.body;
       } catch(error) {
